@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Công cụ tạo mật khẩu mạnh</title>
+    <meta name="description"
+        content="Tạo mật khẩu ngẫu nhiên mạnh và an toàn. Tùy chỉnh độ dài, chữ hoa, chữ thường, số và ký tự đặc biệt.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4.1.11"></script>
+    <style type="text/tailwindcss">
+        @theme {
+            --font-sans: Roboto, sans-serif;
+            --color-primary: #fdca1e;
+        }
+    </style>
+</head>
+
+<body class="bg-white font-sans text-slate-900">
+    <main class="mx-auto max-w-3xl p-4 sm:p-6">
+        <section class="mb-6">
+            <h2 class="text-2xl font-bold">Công cụ tạo mật khẩu mạnh</h2>
+            <p class="mt-2 text-sm leading-6 text-slate-500">
+                Tạo mật khẩu ngẫu nhiên với độ bảo mật cao. Tùy chỉnh độ dài và các loại ký tự theo nhu cầu.
+            </p>
+        </section>
+
+        <section class="rounded-2xl border border-slate-200 p-4 sm:p-6">
+            <label for="password" class="mb-2 block text-sm font-bold">
+                Mật khẩu được tạo
+            </label>
+
+            <div class="flex gap-2">
+                <input id="password" type="text" readonly
+                    class="min-w-0 flex-1 rounded-xl border border-slate-200 bg-slate-50 px-3 py-3 text-sm font-semibold outline-none"
+                    value="">
+
+                <button id="copyBtn" type="button"
+                    class="rounded-xl bg-primary px-4 text-sm font-bold hover:bg-yellow-400">
+                    Sao chép
+                </button>
+            </div>
+
+            <div class="mt-4">
+                <div class="mb-2 flex justify-between text-sm">
+                    <span class="font-semibold">Độ mạnh mật khẩu</span>
+                    <span id="strengthText" class="font-bold text-slate-500">Chưa đánh giá</span>
+                </div>
+                <div class="h-2 overflow-hidden rounded-full bg-slate-100">
+                    <div id="strengthBar" class="h-full w-0 rounded-full transition-all"></div>
+                </div>
+            </div>
+
+            <button id="generateBtn" type="button"
+                class="mt-5 min-h-12 w-full rounded-xl bg-primary px-5 font-bold hover:bg-yellow-400">
+                Tạo mật khẩu mới
+            </button>
+        </section>
+
+        <section class="mt-5 rounded-2xl border border-slate-200 p-4 sm:p-6">
+            <h3 class="mb-5 text-lg font-bold">Tùy chỉnh mật khẩu</h3>
+
+            <div>
+                <div class="mb-3 flex items-center justify-between">
+                    <label for="length" class="text-sm font-semibold">Độ dài mật khẩu</label>
+                    <span id="lengthValue" class="rounded-lg bg-yellow-50 px-3 py-1 text-sm font-bold">16 ký tự</span>
+                </div>
+                <input id="length" type="range" min="8" max="64" value="16"
+                    class="w-full cursor-pointer accent-yellow-500">
+                <div class="mt-1 flex justify-between text-xs text-slate-400">
+                    <span>8 ký tự</span>
+                    <span>64 ký tự</span>
+                </div>
+            </div>
+
+            <div class="mt-6 space-y-4">
+                <label class="flex cursor-pointer items-center justify-between gap-3">
+                    <span>
+                        <span class="block text-sm font-semibold">Chữ hoa (A-Z)</span>
+                        <span class="text-xs text-slate-500">Ví dụ: ABCDE</span>
+                    </span>
+                    <input id="uppercase" type="checkbox" checked class="h-5 w-5 accent-yellow-500">
+                </label>
+
+                <label class="flex cursor-pointer items-center justify-between gap-3">
+                    <span>
+                        <span class="block text-sm font-semibold">Chữ thường (a-z)</span>
+                        <span class="text-xs text-slate-500">Ví dụ: abcde</span>
+                    </span>
+                    <input id="lowercase" type="checkbox" checked class="h-5 w-5 accent-yellow-500">
+                </label>
+
+                <label class="flex cursor-pointer items-center justify-between gap-3">
+                    <span>
+                        <span class="block text-sm font-semibold">Chữ số (0-9)</span>
+                        <span class="text-xs text-slate-500">Ví dụ: 12345</span>
+                    </span>
+                    <input id="numbers" type="checkbox" checked class="h-5 w-5 accent-yellow-500">
+                </label>
+
+                <label class="flex cursor-pointer items-center justify-between gap-3">
+                    <span>
+                        <span class="block text-sm font-semibold">Ký tự đặc biệt</span>
+                        <span class="text-xs text-slate-500">Ví dụ: !@#$%</span>
+                    </span>
+                    <input id="symbols" type="checkbox" checked class="h-5 w-5 accent-yellow-500">
+                </label>
+
+                <label class="flex cursor-pointer items-center justify-between gap-3">
+                    <span>
+                        <span class="block text-sm font-semibold">Loại bỏ ký tự dễ nhầm lẫn</span>
+                        <span class="text-xs text-slate-500">Ví dụ: O, 0, l, 1, I</span>
+                    </span>
+                    <input id="exclude" type="checkbox" class="h-5 w-5 accent-yellow-500">
+                </label>
+            </div>
+
+            <p id="status" role="status" aria-live="polite" class="mt-5 min-h-5 text-sm text-slate-600"></p>
+        </section>
+
+        <section class="mt-5 rounded-2xl border border-slate-200 p-4 sm:p-6">
+            <h3 class="font-bold">Lưu ý bảo mật</h3>
+            <ul class="mt-3 list-inside list-disc space-y-2 text-sm leading-6 text-slate-600">
+                <li>Nên sử dụng mật khẩu dài từ 12 ký tự trở lên.</li>
+                <li>Kết hợp chữ hoa, chữ thường, số và ký tự đặc biệt.</li>
+                <li>Không sử dụng cùng một mật khẩu cho nhiều tài khoản.</li>
+                <li>Không chia sẻ mật khẩu cho người khác.</li>
+                <li>Nên sử dụng trình quản lý mật khẩu đáng tin cậy để lưu trữ.</li>
+            </ul>
+        </section>
+    </main>
+
+    <script>
+        async function gbCopy(text) {
+            try {
+                await navigator.clipboard.writeText(text);
+                return true;
+            } catch (error) {
+                const input = document.createElement("textarea");
+                input.value = text;
+                input.style.position = "fixed";
+                input.style.opacity = "0";
+                document.body.appendChild(input);
+                input.select();
+                const result = document.execCommand("copy");
+                input.remove();
+                return result;
+            }
+        }
+
+        function gbDownload(data, filename, type) {
+            const blob = data instanceof Blob ? data : new Blob([data], {type: type || "text/plain"});
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.href = url;
+            link.download = filename;
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+            setTimeout(() => URL.revokeObjectURL(url), 1000);
+        }
+
+        const $ = id => document.getElementById(id);
+
+        const characterSets = {
+            uppercase: "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+            lowercase: "abcdefghijklmnopqrstuvwxyz",
+            numbers: "0123456789",
+            symbols: "!@#$%^&*()-_=+[]{};:,.?"
+        };
+
+        function randomNumber(max) {
+            const array = new Uint32Array(1);
+            const limit = Math.floor(4294967296 / max) * max;
+
+            do {
+                crypto.getRandomValues(array);
+            } while (array[0] >= limit);
+
+            return array[0] % max;
+        }
+
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = randomNumber(i + 1);
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        function getSelectedSets() {
+            const selected = [];
+
+            Object.keys(characterSets).forEach(key => {
+                if ($(key).checked) {
+                    let chars = characterSets[key];
+
+                    if ($("exclude").checked) {
+                        chars = chars.replace(/[O0Il1]/g, "");
+                    }
+
+                    selected.push(chars);
+                }
+            });
+
+            return selected;
+        }
+
+        function generatePassword() {
+            if (!window.crypto || !crypto.getRandomValues) {
+                $("status").textContent = "Trình duyệt không hỗ trợ tạo số ngẫu nhiên bảo mật.";
+                $("status").className = "mt-5 min-h-5 text-sm text-red-600";
+                return;
+            }
+
+            const sets = getSelectedSets();
+            const length = Number($("length").value);
+
+            if (sets.length === 0) {
+                $("status").textContent = "Vui lòng chọn ít nhất một loại ký tự.";
+                $("status").className = "mt-5 min-h-5 text-sm text-red-600";
+                return;
+            }
+
+            let allChars = sets.join("");
+            let password = [];
+
+            sets.forEach(set => {
+                password.push(set[randomNumber(set.length)]);
+            });
+
+            while (password.length < length) {
+                password.push(allChars[randomNumber(allChars.length)]);
+            }
+
+            password = shuffle(password).slice(0, length);
+
+            const result = password.join("");
+            $("password").value = result;
+
+            updateStrength(result, sets);
+            $("status").textContent = "Đã tạo mật khẩu mới thành công.";
+            $("status").className = "mt-5 min-h-5 text-sm text-green-700";
+        }
+
+        function updateStrength(password, sets) {
+            let score = 0;
+
+            if (password.length >= 12) score++;
+            if (password.length >= 16) score++;
+            if (sets.length >= 2) score++;
+            if (sets.length >= 3) score++;
+            if (sets.length === 4) score++;
+
+            const levels = [
+                {text: "Yếu", width: "20%", color: "bg-red-500", textColor: "text-red-600"},
+                {text: "Trung bình", width: "40%", color: "bg-orange-500", textColor: "text-orange-600"},
+                {text: "Khá", width: "60%", color: "bg-yellow-500", textColor: "text-yellow-700"},
+                {text: "Mạnh", width: "80%", color: "bg-green-500", textColor: "text-green-600"},
+                {text: "Rất mạnh", width: "100%", color: "bg-emerald-600", textColor: "text-emerald-700"}
+            ];
+
+            const level = levels[Math.min(score, 4)];
+
+            $("strengthText").textContent = level.text;
+            $("strengthText").className = "font-bold " + level.textColor;
+            $("strengthBar").style.width = level.width;
+            $("strengthBar").className = "h-full rounded-full transition-all " + level.color;
+        }
+
+        $("length").addEventListener("input", () => {
+            $("lengthValue").textContent = $("length").value + " ký tự";
+        });
+
+        $("generateBtn").addEventListener("click", generatePassword);
+
+        $("copyBtn").addEventListener("click", async () => {
+            const password = $("password").value;
+
+            if (!password) {
+                $("status").textContent = "Chưa có mật khẩu để sao chép.";
+                return;
+            }
+
+            const copied = await gbCopy(password);
+
+            $("status").textContent = copied
+                ? "Đã sao chép mật khẩu."
+                : "Không thể sao chép mật khẩu.";
+        });
+
+        ["uppercase", "lowercase", "numbers", "symbols", "exclude"].forEach(id => {
+            $(id).addEventListener("change", generatePassword);
+        });
+
+        $("length").addEventListener("change", generatePassword);
+
+        generatePassword();
+    </script>
+</body>
+
+</html>
